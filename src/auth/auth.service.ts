@@ -41,7 +41,7 @@ export class AuthService {
     throw new UnauthorizedException('Email os password are incorrect');
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async validateToken(token: string) {
     if (!token) {
       throw new UnauthorizedException();
@@ -49,17 +49,17 @@ export class AuthService {
     return this.jwtService.verify(token);
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async responseTokenNormalize(tokenAll: any): Promise<IResponsToken> {
     const { accessToken: token } = tokenAll;
     return token;
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   private async generateTokens(payload: object) {
     const accessToken = this.jwtService.sign(payload, {
       // algorithm: 'RS256',
-      expiresIn: '5m',
+      expiresIn: '15d',
     });
     const refreshToken = this.jwtService.sign(payload, {
       // algorithm: 'RS256',
@@ -68,7 +68,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   private async saveToken(userId: User, tokens: any): Promise<IToken> {
     const { refreshToken, accessToken } = tokens;
 
@@ -84,13 +84,13 @@ export class AuthService {
     });
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async signUp(createUserDto: CreateUserDto): Promise<IResponsUser> {
     const user = await this.userService.create(createUserDto);
     return await this.userService.responseUserNormalize(user);
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async signIn(res: Response, userEmail: string, password: string) {
     const user = await this.validateUser(userEmail, password);
     const { id, email, userName } = user;
@@ -111,7 +111,7 @@ export class AuthService {
     };
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async logOut(refreshToken: string) {
     const { id } = await this.tokensRepository.findOne({
       where: { refreshToken },
@@ -124,7 +124,7 @@ export class AuthService {
     return { massage: 'The exit was completed successfully!' };
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async verify(verificationKey: string) {
     const { id } = await this.userRepository.findOne({
       where: { verificationKey },
@@ -140,7 +140,7 @@ export class AuthService {
     return { massage: 'The verification was successful. ' };
   }
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async refresh(res: Response, refToken: string) {
     await this.validateToken(refToken);
 
