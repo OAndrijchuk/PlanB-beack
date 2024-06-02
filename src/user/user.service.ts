@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { TryCatchWrapper } from 'src/decorators/error-cach.decorator';
+// import { TryCatchWrapper } from 'src/decorators/error-cach.decorator';
 import { paginate } from 'src/utils/pagination.util';
 import { Tokens } from 'src/auth/entities/tokens.entity';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,7 +23,7 @@ export class UserService {
     private readonly tokensRepository: Repository<Tokens>,
   ) {}
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   private async checkEmail(email: string) {
     const existUser = await this.userRepository.findOne({
       where: { email },
@@ -35,7 +35,7 @@ export class UserService {
     return existUser;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   private async checkUserExist(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -47,7 +47,7 @@ export class UserService {
     return user;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async responseUserNormalize(res: any) {
     const { id, email, userName, isVerify } = res;
     const normalizeRes = {
@@ -59,7 +59,7 @@ export class UserService {
     return normalizeRes;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async findAll(page: number = 1, limit: number = 20) {
     const users = await this.userRepository.find();
 
@@ -72,7 +72,7 @@ export class UserService {
     return await Promise.all(paginatedUsers);
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async create(createUserDto: CreateUserDto) {
     await this.checkEmail(createUserDto.email);
 
@@ -99,7 +99,7 @@ export class UserService {
 
     return user;
   }
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async createAuth0(userOptions: any) {
     const user = await this.userRepository.save({
       ...userOptions,
@@ -116,13 +116,13 @@ export class UserService {
     return user;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async findOneByID(id: number) {
     const user = await this.checkUserExist(id);
     return user;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async findOneByEmail(email: string) {
     const existUser = await this.userRepository.findOne({
       where: { email },
@@ -146,7 +146,7 @@ export class UserService {
     return existUser;
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.checkUserExist(id);
 
@@ -159,7 +159,7 @@ export class UserService {
     return await this.responseUserNormalize(newUser);
   }
 
-  @TryCatchWrapper()
+  // @TryCatchWrapper()
   async remove(id: number) {
     await this.checkUserExist(id);
     const newUser = await this.userRepository.delete({
