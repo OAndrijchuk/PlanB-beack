@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   Put,
-  Query,
+  // Query,
   UsePipes,
   ValidationPipe,
   UseGuards,
@@ -30,8 +30,9 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
-    return this.userService.findAll(+page, +limit);
+  // findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+  findAll() {
+    return this.userService.findAll();
   }
 
   @Get(':id')
