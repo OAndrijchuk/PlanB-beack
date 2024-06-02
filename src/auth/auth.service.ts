@@ -14,7 +14,7 @@ import { Repository } from 'typeorm';
 import { TryCatchWrapper } from '../decorators/error-cach.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { cookieOptions } from '../utils/save-cookie-obj';
+// import { cookieOptions } from '../utils/save-cookie-obj';
 import { Response } from 'express';
 // import * as dotenv from 'dotenv';
 // dotenv.config();
@@ -101,12 +101,13 @@ export class AuthService {
     });
     const newTokens = await this.saveToken(user, tokens);
     const goodUser = await this.userService.findOneByID(id);
-    const token = goodUser.tokenId.accessToken;
+    // const token = goodUser.tokenId.accessToken;
 
-    res.cookie('refreshToken', newTokens.refreshToken, cookieOptions);
+    // res.cookie('refreshToken', newTokens.refreshToken, cookieOptions);
 
     return {
-      token,
+      accessToken: goodUser.tokenId.accessToken,
+      refreshToken: newTokens.refreshToken,
       user: await this.userService.responseUserNormalize(goodUser),
     };
   }
@@ -160,10 +161,10 @@ export class AuthService {
       token.userId,
       tokens,
     );
-    res.cookie('refreshToken', refreshToken, cookieOptions);
+
     return {
-      token: accessToken,
-      user: await this.userService.responseUserNormalize(token.userId),
+      refreshToken,
+      accessToken,
     };
   }
 }
