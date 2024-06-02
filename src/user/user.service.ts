@@ -6,7 +6,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 // import { TryCatchWrapper } from 'src/decorators/error-cach.decorator';
-import { paginate } from 'src/utils/pagination.util';
+// import { paginate } from 'src/utils/pagination.util';
 import { Tokens } from 'src/auth/entities/tokens.entity';
 import { v4 as uuidv4 } from 'uuid';
 // import sendEmail from 'src/utils/sendEmail';
@@ -60,16 +60,17 @@ export class UserService {
   }
 
   // @TryCatchWrapper()
-  async findAll(page: number = 1, limit: number = 20) {
+  // async findAll(page?: number = 1, limit?: number = 20) {
+  async findAll() {
     const users = await this.userRepository.find();
 
-    const paginatedUsers = paginate(users, { page, limit });
+    // const paginatedUsers = paginate(users, { page, limit });
     // const newUsers = paginatedUsers.map(
     //   async user => await this.responseUserNormalize(user),
     // );
 
     // return await Promise.all(newUsers);
-    return await Promise.all(paginatedUsers);
+    return await Promise.all(users);
   }
 
   // @TryCatchWrapper()

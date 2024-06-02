@@ -11,9 +11,10 @@ import { Tokens } from 'src/auth/entities/tokens.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 // import { TryCatchWrapper } from 'src/decorators/error-cach.decorator';
+import { TryCatchWrapper } from '../decorators/error-cach.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { cookieOptions } from 'src/utils/save-cookie-obj';
+import { cookieOptions } from '../utils/save-cookie-obj';
 import { Response } from 'express';
 // import * as dotenv from 'dotenv';
 // dotenv.config();
@@ -29,7 +30,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // @TryCatchWrapper()
+  @TryCatchWrapper()
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findOneByEmail(email);
 
